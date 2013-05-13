@@ -16,11 +16,12 @@ Trafgen configuration generator and syntax testing tool
       Input:
 
 	-c <file> Exported C array (Wireshark)
+	-p <file> PCAP file (requires netsniff-ng)
 
       Output:
 	
 	-s <type> Separator:
-	   "comma/white/noendcomma"
+	   "comma/white/endwhite/noendcomma"
 	-o <file> Write to file (default: stdout)
 
 Usage: $0 -h
@@ -34,10 +35,15 @@ output()
 if [[ $OUT == "comma" ]]; then
 cat - 
 fi
-
 if [[ $OUT == "white" ]]; then
-	sed 's/,$//' > ${OUTFILE:-/dev/stdout}
+	tr -d ',' > ${OUTFILE:-/dev/stdout}
 fi
+if [[ $OUT == "endwhite" ]]; then
+	sed 's/,//10' > ${OUTFILE:-/dev/stdout}
+fi
+if [ -z $OUT ]; then
+cat - > ${OUTFILE:-/dev/stdout}
+fi 
 }
 
 coutput()
@@ -51,6 +57,9 @@ fi
 if [[ $OUT == "white" ]]; then
 	sed 's/.*{$/{/g;/0x/s/^/ /;s/;//;s/\/\*.*\*\///;s/,/ /g' $INFILE > ${OUTFILE:-/dev/stdout}
 fi
+if [ -z $OUT ]; then
+cat - < $INFILE
+fi 
 }
 
 syslog()
@@ -125,7 +134,7 @@ EOF
 }
 
 # option and argument handling
-while getopts "hc:d:G:m:M:o:s:S:" OPTION
+while getopts "hc:d:G:m:M:o:p:s:S:" OPTION
 do
      case $OPTION in
          h)
@@ -152,6 +161,8 @@ do
 	     OUT="$OPTARG" 
 	     elif [[ "$OPTARG" == white ]]; then
 	     OUT="$OPTARG"
+	     elif [[ "$OPTARG" == endwhite ]]; then
+	     OUT="$OPTARG"
 	     elif [[ "$OPTARG" == noendcomma ]]; then
 	     OUT="$OPTARG"
 	     else
@@ -175,18 +186,30 @@ do
 	  m)
 	     SRCMAC=$(echo $OPTARG | sed 's/^/0x/;s/:/0x/g;s/\(0x[a-zA-Z0-9]\{2\}\)/\1,/g')
 	     ;; 
+	
+	  p) 
+	     INTYPE="$OPTION"
+	     INFILE="$OPTARG" 
+	     ;;
 
          \?)
              ;;
      esac
 done 
 
-# meat
+ # meat
 
+# C array
 if [[ "$INTYPE" == "c" ]]; then
 coutput
 fi
 
+#  PCAP 
+if [[ "$INTYPE" == "p" ]]; then
+netsniff-ng --in $INFILE --out - | output
+fi
+
+# Syslog
 if [[ "$TYPE" == "syslog" ]]; then
 syslog ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} | output
 fi
