@@ -33,7 +33,7 @@ EOF
 output()
 {
 if [[ $OUT == "comma" ]]; then
-cat - 
+cat - > ${OUTFILE:-/dev/stdout}
 fi
 if [[ $OUT == "white" ]]; then
 	tr -d ',' > ${OUTFILE:-/dev/stdout}
@@ -58,7 +58,7 @@ if [[ $OUT == "white" ]]; then
 	sed 's/.*{$/{/g;/0x/s/^/ /;s/;//;s/\/\*.*\*\///;s/,/ /g' $INFILE > ${OUTFILE:-/dev/stdout}
 fi
 if [ -z $OUT ]; then
-cat - < $INFILE
+cat - < $INFILE > ${OUTFILE:-/dev/stdout}
 fi 
 }
 
