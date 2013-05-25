@@ -30,7 +30,7 @@ Trafgen configuration generator and syntax testing tool
 Usage: $0 -h
 $0 -c array.txt -s comma | trafgen --in - --out eth0 --num 100
 $0 -G syslog -s 10.1.1.1 -d 10.1.1.2 -M 00:0c:29:8d:4d:a2
-$0 -G beacon -T random -n 1000 -m de:ad:be:ef:00:00
+$0 -G beacon -T random -n 1000 -m de:ad:be:ef:00:00 -o beacon.cfg
 EOF
 }
 
@@ -150,8 +150,10 @@ cat <<EOF
 
  /* Header Revision */
  0x00,
+
  /* Header Pad */
  0x00,
+
  /* Header Length */
  0x1a, 0x00,
 
@@ -188,6 +190,7 @@ cat <<EOF
 
  /* Duration */
  0x00, 0x00, 
+
  /* Dest MAC Address */
  ${1:-0xff,0xff,0xff,0xff,0xff,0xff,}
  
@@ -252,8 +255,10 @@ cat <<EOF
 
         /* (Vendor Tag) Cisco*/
         0x96,
+
         /* Tag Length */
         0x06,
+
         /* Tag Interpretation */
         0x00, 0x40, 0x96, 0x00, 0x0e, 0x00,
 
