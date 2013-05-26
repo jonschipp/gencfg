@@ -23,12 +23,12 @@ Trafgen configuration generator and syntax testing tool
 
       Output:
 	
-	-s <type> Separator:
+	-S <type> Separator:
 	   "comma/white/endwhite/noendcomma"
 	-o <file> Write to file (default: stdout)
 
 Usage: $0 -h
-$0 -c array.txt -s comma | trafgen --in - --out eth0 --num 100
+$0 -c array.txt -S comma | trafgen --in - --out eth0 --num 100
 $0 -G syslog -s 10.1.1.1 -d 10.1.1.2 -M 00:0c:29:8d:4d:a2
 $0 -G beacon -T random -n 1000 -m de:ad:be:ef:00:00 -o beacon.cfg
 EOF
