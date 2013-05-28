@@ -9,7 +9,7 @@ A trafgen configuration generation and syntax testing tool
 TODO (not ranked) [~~DONE~~]: 
 
 1. More packet configs
-2. Fix endwhite separator
+2. ~~Fix endwhite separator, now noendwhite~~
 3. Apply separators consistently
 4. Create RFC2544 packet configurations
 5. More configurable beacon frame fields
