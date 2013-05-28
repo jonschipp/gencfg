@@ -24,7 +24,7 @@ Trafgen configuration generator and syntax testing tool
       Output:
 	
 	-S <type> Separator:
-	   "comma/white/endwhite/noendcomma"
+	   "comma/white/noendwhite/noendcomma"
 	-o <file> Write to file (default: stdout)
 
 Usage: $0 -h
@@ -42,7 +42,7 @@ fi
 if [[ $OUT == "white" ]]; then
 	tr -d ',' > ${OUTFILE:-/dev/stdout}
 fi
-if [[ $OUT == "endwhite" ]]; then
+if [[ $OUT == "noendwhite" ]]; then
 	sed 's/,//10' > ${OUTFILE:-/dev/stdout}
 fi
 if [ -z $OUT ]; then
@@ -60,6 +60,9 @@ if [[ $OUT == "noendcomma" ]]; then
 fi 
 if [[ $OUT == "white" ]]; then
 	sed 's/.*{$/{/g;/0x/s/^/ /;s/;//;s/\/\*.*\*\///;s/,/ /g' $INFILE > ${OUTFILE:-/dev/stdout}
+fi
+if [[ $OUT == "noendwhite" ]]; then
+	sed 's/.*{$/{/g;/0x/s/^/ /;s/;//;s/\/\*.*\*\///' $INFILE > ${OUTFILE:-/dev/stdout}
 fi
 if [ -z $OUT ]; then
 cat - < $INFILE > ${OUTFILE:-/dev/stdout}
@@ -141,6 +144,7 @@ beacon()
 {
 for n in $(seq 1 $NUM)
 do
+
 if [[ $SSID == random ]]; then
 set -- "$1" "$2" "$(tr -dc "[:alpha:]" < /dev/urandom | head -c 8)"
 fi
@@ -316,7 +320,7 @@ do
 	     OUT="$OPTARG" 
 	     elif [[ "$OPTARG" == white ]]; then
 	     OUT="$OPTARG"
-	     elif [[ "$OPTARG" == endwhite ]]; then
+	     elif [[ "$OPTARG" == noendwhite ]]; then
 	     OUT="$OPTARG"
 	     elif [[ "$OPTARG" == noendcomma ]]; then
 	     OUT="$OPTARG"
