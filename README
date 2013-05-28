@@ -15,6 +15,7 @@ TODO (not ranked) [~~DONE~~]:
 5. More configurable beacon frame fields
 6. Write function to check for trafgen and netsniff-ng
 7. Add NST packet configs.
+8. Add config addressed in ip frag patch to linux kernel 
  
 USAGE:
 
