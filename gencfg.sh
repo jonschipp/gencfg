@@ -110,7 +110,7 @@ cat <<EOF
 
          /* PRI */
          0x3c,
-         50,57
+         50,57,
          0x3e,
 
          /* Timestamp */
