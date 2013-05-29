@@ -5,9 +5,9 @@ cat <<EOF
 
 Trafgen configuration generator and syntax testing tool
 
-      Generation: 
+      Generation:
 
-	-G <type> packet type "syslog/beacon" 	  
+	-G <type> packet type "syslog/beacon"
 	-s <ip>   Source IP
 	-d <ip>   Destination IP
 	-m <mac>  Source Mac, aa:bb:cc...
@@ -22,7 +22,7 @@ Trafgen configuration generator and syntax testing tool
 	-p <file> PCAP file (requires netsniff-ng)
 
       Output:
-	
+
 	-S <type> Separator:
 	   "comma/white/noendwhite/noendcomma"
 	-o <file> Write to file (default: stdout)
@@ -47,17 +47,17 @@ if [[ $OUT == "noendwhite" ]]; then
 fi
 if [ -z $OUT ]; then
 cat - > ${OUTFILE:-/dev/stdout}
-fi 
+fi
 }
 
 coutput()
 {
 if [[ $OUT == "comma" ]]; then
 	sed 's/.*{$/{/g;/0x/s/^/ /;s/;//;s/\/\*.*\*\///;s/\(0x[a-z0-9]\{2\}\) /\1,/' $INFILE > ${OUTFILE:-/dev/stdout}
-fi 
+fi
 if [[ $OUT == "noendcomma" ]]; then
 	sed 's/.*{$/{/g;/0x/s/^/ /;s/;//;s/\/\*.*\*\///' $INFILE > ${OUTFILE:-/dev/stdout}
-fi 
+fi
 if [[ $OUT == "white" ]]; then
 	sed 's/.*{$/{/g;/0x/s/^/ /;s/;//;s/\/\*.*\*\///;s/,/ /g' $INFILE > ${OUTFILE:-/dev/stdout}
 fi
@@ -66,7 +66,7 @@ if [[ $OUT == "noendwhite" ]]; then
 fi
 if [ -z $OUT ]; then
 cat - < $INFILE > ${OUTFILE:-/dev/stdout}
-fi 
+fi
 }
 
 syslog()
@@ -193,11 +193,11 @@ cat <<EOF
  0x80, 0x00,
 
  /* Duration */
- 0x00, 0x00, 
+ 0x00, 0x00,
 
  /* Dest MAC Address */
  ${1:-0xff,0xff,0xff,0xff,0xff,0xff,}
- 
+
  /* Source Address */
  ${2:-0xaa, 0xbb, 0xcc, 0x11, 0x22, 0x33,}
 
@@ -295,11 +295,11 @@ do
              usage
 	     exit
 	     ;;
-	 c) 
+	 c)
 	     INTYPE="$OPTION"
-	     INFILE="$OPTARG" 
-	     ;; 
-	 G) 
+	     INFILE="$OPTARG"
+	     ;;
+	 G)
 	     if [[ "$OPTARG" == syslog ]]; then
 	     TYPE="$OPTARG"
 	     elif [[ "$OPTARG" == beacon ]]; then
@@ -309,15 +309,15 @@ do
 	     exit 1
 	     fi
 	     ;;
-	 n) 
+	 n)
 	     NUM="$OPTARG"
 	     ;;
 	 o)
 	     OUTFILE="$OPTARG"
-	     ;;	
+	     ;;
 	 S)
 	     if [[ "$OPTARG" == comma ]]; then
-	     OUT="$OPTARG" 
+	     OUT="$OPTARG"
 	     elif [[ "$OPTARG" == white ]]; then
 	     OUT="$OPTARG"
 	     elif [[ "$OPTARG" == noendwhite ]]; then
@@ -328,29 +328,29 @@ do
 	     echo "Unknown separator!"
 	     exit 1
 	     fi
-	     ;;	
+	     ;;
 
-	  s) 
+	  s)
 	     SRCIP=$(echo $OPTARG | tr '.' ',')
 	     ;;
 
 	  d)
 	     DSTIP=$(echo $OPTARG | tr '.' ',')
              ;;
- 
+
           M)
 	     DSTMAC=$(echo $OPTARG | sed 's/^/0x/;s/:/0x/g;s/\(0x[a-zA-Z0-9]\{2\}\)/\1,/g')
-	     ;; 
-	  
+	     ;;
+
 	  m)
 	     SRCMAC=$(echo $OPTARG | sed 's/^/0x/;s/:/0x/g;s/\(0x[a-zA-Z0-9]\{2\}\)/\1,/g')
-	     ;; 
-	
-	  p) 
-	     INTYPE="$OPTION"
-	     INFILE="$OPTARG" 
 	     ;;
-	  
+
+	  p)
+	     INTYPE="$OPTION"
+	     INFILE="$OPTARG"
+	     ;;
+
    	  T)
 	     if [[ "$OPTARG" == random ]]; then
 	     SSID="random"
@@ -360,7 +360,7 @@ do
          \?)
              ;;
      esac
-done 
+done
 
  # meat
 
@@ -369,7 +369,7 @@ if [[ "$INTYPE" == "c" ]]; then
 coutput
 fi
 
-#  PCAP 
+#  PCAP
 if [[ "$INTYPE" == "p" ]]; then
 netsniff-ng --in $INFILE --out - | output
 fi
