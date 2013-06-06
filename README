@@ -5,7 +5,7 @@ A trafgen configuration generation and syntax testing tool
 * Generate premade and customizable packet generations
 * Apply byte separators to test syntax after changes to the lex parser
 * Convert input file to trafgen packet configuration
- 
+
 TODO (not ranked) [~~DONE~~]:
 
 1. More packet configs
@@ -16,7 +16,7 @@ TODO (not ranked) [~~DONE~~]:
 6. Write function to check for trafgen and netsniff-ng
 7. Add NST packet configs.
 8. Add config addressed in ip frag patch to linux kernel
- 
+
 USAGE:
 
 Usage: ./gencfg -G <packet type> -S <separator> [-o out.txt]
@@ -52,7 +52,7 @@ CONVERSION:
 
 -c Convert C array of bytes exported from Wireshark. e.g. -c carray.txt
 -p Convert PCAP (requires netsniff-ng) to trafgen config e.g. -p example.pcap
- 
+
 EXAMPLES:
 
 ./gencfg -c array.txt -S comma | trafgen --in - --out eth0 --num 100
