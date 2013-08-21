@@ -7,14 +7,15 @@ Trafgen configuration generator and syntax testing tool
 
       Generation:
 
-	-G <type> packet type "syslog/beacon"
+	-G <type> packet type "syslog/beacon/rfc2544":
+		``rfc2544'' writes each frame size to file
 	-s <ip>   Source IP
 	-d <ip>   Destination IP
 	-m <mac>  Source Mac, aa:bb:cc...
 	-M <mac>  Destination Mac, 00:11:22
-	-T <ssid> for type "beacon" e.g. -T "Awesome!"
+	-T <ssid> for type "beacon" e.g. ``-T "Awesome!"''
 	   if "random", generate random SSID of length 8
-	-n <#> of random generations for '-T random' only
+	-n <#> of random generations for ``-T random'' only
 
       Input:
 
@@ -138,6 +139,58 @@ cat <<EOF
                 "Syslog Stresser!",
 }
 EOF
+}
+
+rfc2544()
+{
+# data = rfc2544(frame_size) - (eth_hdr - ip_hdr - udp_hdr)
+data=( 22 86 214 470 726 982 1238 1476 )
+
+for payload in "${data[@]}"
+do
+
+cat <<EOF > $(($payload+42)).cfg
+
+	/* RFC2544 - Frame Size: $(($payload+42)) */
+{
+ /* Dst Mac */
+ ${1:-0xff,0xff,0xff,0xff,0xff,0xff,}
+ /* Src Mac */
+ ${2:-0x11,0x22,0x33,0x440,0x55,0x66,}
+ /* EtherType */
+ c16(0x0800),
+ /* IPv4 Version, IHL, TOS */
+ 0b01000101, 0,
+ /* IPv4 Total Len */
+ c16(122),
+ /* IPv4 Ident */
+ drnd(2),
+ /* IPv4 Flags, Frag Off */
+ 0b01000000, 0,
+ /* IPv4 TTL */
+ 64,
+ /* Proto UDP */
+ 17,
+ /* IPv4 Checksum (IP header from, to) */
+ csumip(14, 33),
+ /* Source IP */
+ ${3:-192,168,1,255,}
+ /* Dest IP */
+ ${4:-192,168,1,1,}
+ /* UDP Source Port */
+ c16(514),
+ /* UDP Dest Port */
+ c16(514),
+ /* Length */
+ c16(102),
+ /* Checksum */
+ c16(00),
+ /* Data */
+$(eval "printf ' 0xff,\n%.0s' {1..$payload}")
+}
+
+EOF
+done
 }
 
 beacon()
@@ -304,6 +357,8 @@ do
 	     TYPE="$OPTARG"
 	     elif [[ "$OPTARG" == beacon ]]; then
 	     TYPE="$OPTARG"
+	     elif [[ "$OPTARG" == rfc2544 ]]; then
+	     TYPE="$OPTARG"
 	     else
 	     echo "Unknown type!"
 	     exit 1
@@ -377,6 +432,11 @@ fi
 # Syslog
 if [[ "$TYPE" == "syslog" ]]; then
 syslog ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} | output
+fi
+
+# RFC2544
+if [[ "$TYPE" == "rfc2544" ]]; then
+rfc2544 ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""}
 fi
 
 # Beacon
