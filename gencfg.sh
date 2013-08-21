@@ -8,14 +8,14 @@ Trafgen configuration generator and syntax testing tool
       Generation:
 
 	-G <type> packet type "syslog/beacon/rfc2544":
-		``rfc2544'' writes each frame size to file
+		\`\`rfc2544'' writes each frame size to file
 	-s <ip>   Source IP
 	-d <ip>   Destination IP
 	-m <mac>  Source Mac, aa:bb:cc...
 	-M <mac>  Destination Mac, 00:11:22
-	-T <ssid> for type "beacon" e.g. ``-T "Awesome!"''
+	-T <ssid> for type "beacon" e.g. \`\`-T "Awesome!"''
 	   if "random", generate random SSID of length 8
-	-n <#> of random generations for ``-T random'' only
+	-n <#> of random generations for \`\`-T random'' only
 
       Input:
 
@@ -149,7 +149,7 @@ data=( 22 86 214 470 726 982 1238 1476 )
 for payload in "${data[@]}"
 do
 
-cat <<EOF > $(($payload+42)).cfg
+cat <<EOF | tee $(($payload+42)).cfg
 
 	/* RFC2544 - Frame Size: $(($payload+42)) */
 {
@@ -436,7 +436,7 @@ fi
 
 # RFC2544
 if [[ "$TYPE" == "rfc2544" ]]; then
-rfc2544 ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""}
+rfc2544 ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} | output
 fi
 
 # Beacon
