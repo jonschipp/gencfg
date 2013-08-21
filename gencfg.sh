@@ -183,7 +183,7 @@ cat <<EOF | tee $(($payload+42)).cfg
  /* IPv4 Version, IHL, TOS */
  0b01000101, 0,
  /* IPv4 Total Len */
- c16(122),
+ c16($(($payload+20+8))),
  /* IPv4 Ident */
  drnd(2),
  /* IPv4 Flags, Frag Off */
@@ -199,11 +199,11 @@ cat <<EOF | tee $(($payload+42)).cfg
  /* Dest IP */
  ${4:-192,168,1,1,}
  /* UDP Source Port */
- c16(514),
+ c16(0),
  /* UDP Dest Port */
- c16(514),
+ c16(0),
  /* Length */
- c16(102),
+ c16($(($payload+8))),
  /* Checksum */
  c16(00),
  /* Data */
