@@ -34,14 +34,16 @@ Trafgen configuration generator and syntax testing tool
 	-d <ip>   Destination IP
 	-m <mac>  Source Mac, aa:bb:cc...
 	-M <mac>  Destination Mac, 00:11:22
+	-p <num>  Source Port
+	-P <num>  Destination Port
 	-T <ssid> for type "beacon" e.g. \`\`-T "Awesome!"''
 	   if "random", generate random SSID of length 8
-	-n <#> of random generations for \`\`-T random'' only
+	-n <num> of random generations for \`\`-T random'' only
 
       Input:
 
 	-c <file> Exported C array (Wireshark)
-	-p <file> PCAP file (requires netsniff-ng)
+	-r <file> PCAP file (requires netsniff-ng)
 
       Output:
 
@@ -120,9 +122,9 @@ cat <<EOF
  /* Dest IP */
  ${4:-192,168,1,1,}
  /* UDP Source Port */
- c16(514),
+ c16(${5:-514}),
  /* UDP Dest Port */
- c16(514),
+ c16(${6:-514}),
  /* Length */
  c16(102),
  /* Checksum */
@@ -199,9 +201,9 @@ cat <<EOF | tee $(($payload+42)).cfg
  /* Dest IP */
  ${4:-192,168,1,1,}
  /* UDP Source Port */
- c16(0),
+ c16(${5:-0}),
  /* UDP Dest Port */
- c16(0),
+ c16(${6:-0}),
  /* Length */
  c16($(($payload+8))),
  /* Checksum */
@@ -362,7 +364,7 @@ done
 }
 
 # option and argument handling
-while getopts "hc:d:G:m:M:n:o:p:s:S:T:" OPTION
+while getopts "hc:d:G:m:M:n:o:r:p:P:s:S:T:" OPTION
 do
      case $OPTION in
          h)
@@ -421,8 +423,14 @@ do
 	  m)
 	     SRCMAC=$(echo $OPTARG | sed 's/^/0x/;s/:/0x/g;s/\(0x[a-zA-Z0-9]\{2\}\)/\1,/g')
 	     ;;
-
 	  p)
+	     SRCPORT="$OPTARG"
+	     ;;
+	  P)
+	     DSTPORT="$OPTARG"
+	     ;;
+
+	  r)
 	     INTYPE="$OPTION"
 	     INFILE="$OPTARG"
 	     ;;
@@ -446,18 +454,18 @@ coutput
 fi
 
 #  PCAP
-if [[ "$INTYPE" == "p" ]]; then
+if [[ "$INTYPE" == "r" ]]; then
 netsniff-ng --in $INFILE --out - | output
 fi
 
 # Syslog
 if [[ "$TYPE" == "syslog" ]]; then
-syslog ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} | output
+syslog ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} ${SRCPORT:-""} ${DSTPORT:-""} | output
 fi
 
 # RFC2544
 if [[ "$TYPE" == "rfc2544" ]]; then
-rfc2544 ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} | output
+rfc2544 ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} ${SRCPORT:-""} ${DSTPORT:-""} | output
 fi
 
 # Beacon
