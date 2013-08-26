@@ -29,7 +29,7 @@ Trafgen configuration generator and syntax testing tool
       Generation:
 
 	-G <type> packet type "syslog/beacon/rfc2544":
-		\`\`rfc2544'' writes each frame size to file
+		\`\`rfc2544'' writes each frame size to dir
 	-s <ip>   Source IP
 	-d <ip>   Destination IP
 	-m <mac>  Source Mac, aa:bb:cc...
@@ -166,13 +166,18 @@ EOF
 
 rfc2544()
 {
+
+# Write configs to directory
+RFCDIR=rfc2544-$(date +%s)
+mkdir $RFCDIR
+
 # data = rfc2544(frame_size) - (eth_hdr - ip_hdr - udp_hdr)
 data=( 22 86 214 470 726 982 1238 1476 )
 
 for payload in "${data[@]}"
 do
 
-cat <<EOF | tee $(($payload+42)).cfg
+cat <<EOF | tee $RFCDIR/$(($payload+42)).cfg
 
 	/* RFC2544 - Frame Size: $(($payload+42)) */
 {
