@@ -52,7 +52,7 @@ include source MAC, destination MAC, source IP, and destination IP.
 (rfc2544) - Generates an individual packet configuration based on the
 Ethernet frame sized specified in RFC2544, "Benchmarking Methodology
 for Network Interconnect Devices". Each size is written to a cfg file
-in the current working directory (no stdout). Sizes are outlined in
+in directory title rfc2544-$ts and to stdout. Sizes are outlined in
 Section 9.1, "Frame sizes to be used on Ethernet" and consist of 64,
 128, 256, 512, 1024, 1280, 1518.
 
