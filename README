@@ -33,7 +33,7 @@ PACKET CONFIGURATION:
 
 Generate built-in packet configurations ( -G <packet type> ).
 
-Supported types:
+Supported packet types:
 
 (beacon) - Generation of 802.11 beacon frames. For proper byte alignment
 choose an SSID of 8 alpha-numeric characters ( -T "FreeWifi" ). Random
@@ -41,12 +41,13 @@ generation of 8 characters via /dev/urandom can be done automatically
 ( -T random ) and the number of random SSID beacon generations can be
 chosen ( -n 1000 ). Other configurable option includes specifying the
 source MAC address ( -m 00:11:22:aa:bb:cc ).
+
 ./gencfg -G beacon -T "FreeWifi" -m 00:11:22:aa:bb:cc
 
 (syslog) - Generate a syslog packet configuration. Configurable options
 include source MAC, destination MAC, source IP, and destination IP.
-./gencfg -G syslog -s 10.1.1.1 -d 10.1.1.2 \
--m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
+
+./gencfg -G syslog -s 10.1.1.1 -d 10.1.1.2 -m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
 
 (rfc2544) - Generates an individual packet configuration based on the
 Ethernet frame sized specified in RFC2544, "Benchmarking Methodology
@@ -54,8 +55,8 @@ for Network Interconnect Devices". Each size is written to a cfg file
 in the current working directory (no stdout). Sizes are outlined in
 Section 9.1, "Frame sizes to be used on Ethernet" and consist of 64,
 128, 256, 512, 1024, 1280, 1518.
-./gencfg -G rfc2544 -s 10.1.1.1 -d 10.1.1.2 \
--m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
+
+./gencfg -G rfc2544 -s 10.1.1.1 -d 10.1.1.2 -m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
 
 CONVERSION:
 
@@ -68,6 +69,7 @@ EXAMPLES:
 ./gencfg -G syslog -s 10.1.1.1 -d 10.1.1.2 -M 00:0c:29:8d:4d:a2 -S white
 ./gencfg -G beacon -T random -n 1000 -m de:ad:be:ef:00:00 -o beacon.cfg
 ./gencfg -G beacon -T "FreeWifi" -o beacon.cfg | trafgen --in - --out wlan0 --rfraw --num 1000
+./gencfg -G rfc2544 -s 192.168.1.10 -d 192.168.1.255 -M ff:ff:ff:ff:ff:ff -P 123
 
 AUTHOR: Jon Schipp (keisterstash)
 WEB: sickbits.net, jonschipp.com
