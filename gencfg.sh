@@ -169,15 +169,19 @@ rfc2544()
 
 # Write configs to directory
 RFCDIR=rfc2544-$(date +%s)
+CRC=4
 mkdir $RFCDIR
 
-# data = rfc2544(frame_size) - (eth_hdr - ip_hdr - udp_hdr)
-data=( 22 86 214 470 726 982 1238 1476 )
+# data = rfc2544(((frame_size) - (eth_hdr + ip_hdr + udp_hdr)) - crc)
+# $ echo $((64-$((14+20+8))-4))
+# 18
+
+data=( 18 82 210 466 722 978 1234 1472 )
 
 for payload in "${data[@]}"
 do
 
-cat <<EOF | tee $RFCDIR/$(($payload+42)).cfg
+cat <<EOF | tee $RFCDIR/$(($payload+42+$CRC)).cfg
 
 	/* RFC2544 - Frame Size: $(($payload+42)) */
 {
