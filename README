@@ -54,7 +54,10 @@ Ethernet frame sized specified in RFC2544, "Benchmarking Methodology
 for Network Interconnect Devices". Each size is written to a cfg file
 in directory title rfc2544-$ts and to stdout. Sizes are outlined in
 Section 9.1, "Frame sizes to be used on Ethernet" and consist of 64,
-128, 256, 512, 1024, 1280, 1518.
+128, 256, 512, 1024, 1280, 1518. Ethernet NICs add a 4 byte CRC to each
+frame which is accounted for in each configuration. E.g. for the 64 byte
+frame size, 60 bytes is configured by trafgen and the 4 bytes is added
+by the NIC, thus, totaling a frame size of 64 bytes.
 
 ./gencfg -G rfc2544 -s 10.1.1.1 -d 10.1.1.2 -m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
 
