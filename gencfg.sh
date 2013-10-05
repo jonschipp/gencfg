@@ -210,9 +210,9 @@ cat <<EOF | tee $RFCDIR/$(($payload+42+$CRC)).cfg
  /* Dest IP */
  ${4:-192,168,1,1,}
  /* UDP Source Port */
- c16(${5:-0}),
+ c16(${5:-9}),
  /* UDP Dest Port */
- c16(${6:-0}),
+ c16(${6:-9}),
  /* Length */
  c16($(($payload+8))),
  /* Checksum */
