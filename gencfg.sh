@@ -58,6 +58,14 @@ $0 -G beacon -T random -n 1000 -m de:ad:be:ef:00:00 -o beacon.cfg
 EOF
 }
 
+argcheck() {
+# if less than n argument
+if [ $ARGC -lt $1 ]; then
+        echo "Missing arguments! Use \`\`-h'' for help."
+        exit 1
+fi
+}
+
 output()
 {
 if [[ $OUT == "comma" ]]; then
@@ -411,6 +419,11 @@ cat <<EOF
 EOF
 done
 }
+
+# Initialize variables
+ARGC=$#
+
+argcheck 1
 
 # option and argument handling
 while getopts "hc:d:G:m:M:n:o:r:p:P:s:S:T:" OPTION
