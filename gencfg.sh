@@ -28,7 +28,7 @@ Trafgen configuration generator and syntax testing tool
 
       Generation:
 
-	-G <type> packet type "syslog/beacon/rfc2544":
+	-G <type> packet type "syslog/beacon/rfc2544/arp_request/arp_reply":
 		\`\`rfc2544'' writes each frame size to dir
 	-s <ip>   Source IP
 	-d <ip>   Destination IP
@@ -160,6 +160,46 @@ cat <<EOF
 
                 /* Content */
                 "Syslog Stresser!",
+}
+EOF
+}
+
+arp()
+{
+cat <<EOF
+{
+ /* Dst Mac */
+ ${1:-0xff,0xff,0xff,0xff,0xff,0xff,}
+ /* Src Mac */
+ ${2:-0x11,0x22,0x33,0x440,0x55,0x66,}
+ /* EtherType */
+ c16(0x0806),
+
+ /* ARP RFC 896 */
+
+ 	/* Hardware Type - Ethernet */
+	0x00,0x01,
+	/* Protocol Type - IP */
+	0x08,0x00,
+	/* Hardware Size */
+	6,
+	/* Protocol Size */
+	4,
+	/* Opcode */
+	$OPCODE
+	/* Sender MAC Address */
+ 	${2:-0x11,0x22,0x33,0x440,0x55,0x66,}
+	/* Sender IP Address */
+ 	${3:-192,168,1,254,}
+	/* Target MAC Address */
+	${1:-0xff,0xff,0xff,0xff,0xff,0xff,}
+	/* Target IP Address */
+ 	${4:-192,168,1,1,}
+
+ /* Ethernet Padding (Must be 64 bytes) */
+ 0x00,0x00,0x00,0x00,0x00,0x00,
+ 0x4b,0xd00,0x00,0x00,0x4b,0xd0,
+ 0x00,0x00,0x00,0x50,0x00,0x01,
 }
 EOF
 }
@@ -391,6 +431,12 @@ do
 	     TYPE="$OPTARG"
 	     elif [[ "$OPTARG" == rfc2544 ]]; then
 	     TYPE="$OPTARG"
+	     elif [[ "$OPTARG" == arp_request ]]; then
+	     TYPE="$OPTARG"
+	     OPCODE="0x00,0x01,"
+	     elif [[ "$OPTARG" == arp_reply ]]; then
+	     TYPE="$OPTARG"
+	     OPCODE="0x00,0x02,"
 	     else
 	     echo "Unknown type!"
 	     exit 1
@@ -480,4 +526,9 @@ fi
 # Beacon
 if [[ "$TYPE" == "beacon" ]]; then
 beacon ${DSTMAC:-""} ${SRCMAC:-""} ${SSID:-""} | output
+fi
+
+# ARP
+if [[ "$TYPE" == "arp_request" ]] || [[ "$TYPE" == "arp_reply" ]]; then
+arp ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} | output
 fi
