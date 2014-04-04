@@ -27,11 +27,12 @@ Usage: ./gencfg -G <packet type> -S <separator> [-o out.txt]
 
 `-o` write output to file e.g. `-o packet.cfg`
 
-`-S` byte separator "comma/white/endwhite/noendcomma" e.g. `-S comman`
+`-S` byte separator "comma/white/endwhite/noendcomma" e.g. `-S comma`
 
-Write configurations to a file or redirect to trafgen e.g.
+Write configurations to a file or redirect to trafgen:
 ```shell
-./gencfg ... | trafgen --in - --out`
+./gencfg ... | trafgen --in - --out eth0 --num 1000`
+./gencfg ... -o packet.cfg && trafgen --in packet.cfg --out eth0 --num 1000`
 ```
 
 ## Packet Configuration:
