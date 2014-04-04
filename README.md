@@ -1,6 +1,6 @@
 # gencfg
 
-`gencfg` - A trafgen configuration generation and syntax testing tool
+`gencfg` - A [trafgen](https://github.com/netsniff-ng/netsniff-ng) configuration generation and syntax testing tool
 
    * Generate premade and customizable packet generations
    * Apply byte separators to test syntax after changes to the lex parser
