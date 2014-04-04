@@ -25,9 +25,8 @@ Usage: ./gencfg -G <packet type> -S <separator> [-o out.txt]
 
 ### Non-Mandatory Options:
 
-`-o` write output to file *e.g.* `-o packet.cfg`
-
-`-S` byte separator "comma/white/endwhite/noendcomma" *e.g.* `-S comma`
+`-o` write output to file *e.g.* `-o packet.cfg` <br>
+`-S` byte separator "comma/white/endwhite/noendcomma" *e.g.* `-S comma` <br>
 
 Write configurations to a file or redirect to trafgen:
 ```shell
@@ -97,16 +96,16 @@ Gratuitous ARP Reply:
 ```
 
 #### rfc2544
-Generates an individual packet configuration based on the Ethernet
-frame sizes specified in RFC2544, "Benchmarking Methodology for
-Network Interconnect Devices". Each size is written to a cfg file
-in directory titled `rfc2544-$ts` and to stdout. Sizes are outlined in
-Section 9.1, "Frame sizes to be used on Ethernet" and consist of 64,
-128, 256, 512, 1024, 1280, 1518. Ethernet NICs add a 4 byte CRC to each
-frame which is accounted for in each configuration. E.g. for the 64 byte
-frame size, 60 bytes is configured by trafgen and the 4 bytes is added
-by the NIC, thus, totaling a frame size of 64 bytes. The default source
-and destination ports are set to UDP 9 (discard).
+Generates an individual packet configuration based on the Ethernet frame <br>
+sizes specified in ***RFC2544***, "Benchmarking Methodology for Network Interconnect Devices". <br>
+
+Each size is written to a cfg file in directory titled `rfc2544-$ts` <br>
+and to stdout. Sizes are outlined in ***Section 9.1***, *"Frame sizes to be <br>
+used on Ethernet"* and consist of `64, 128, 256, 512, 1024, 1280, 1518.` <br>
+Ethernet NICs add a 4 byte CRC to each frame which is accounted for in each <br>
+configuration. E.g. for the 64 byte frame size, 60 bytes is configured by trafgen <br>
+and the 4 bytes is added by the NIC, thus, totaling a frame size of 64 bytes. <br>
+The default source and destination ports are set to UDP 9 (discard). <br>
 
 ```shell
 ./gencfg -G rfc2544 -s 10.1.1.1 -d 10.1.1.2 -m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
@@ -114,9 +113,8 @@ and destination ports are set to UDP 9 (discard).
 
 ## Conversion:
 
-`-c` Convert C array of bytes exported from Wireshark. *e.g.* `-c carray.txt`
-
-`-p` Convert PCAP (requires netsniff-ng) to trafgen config *e.g.* `-p example.pcap`
+`-c` Convert C array of bytes exported from Wireshark. *e.g.* `-c carray.txt` <br>
+`-p` Convert PCAP (requires netsniff-ng) to trafgen config *e.g.* `-p example.pcap` <br>
 
 ## Examples:
 ```shell
@@ -128,6 +126,6 @@ and destination ports are set to UDP 9 (discard).
 ```
 
 ## Author:
-Jon Schipp (keisterstash) <br>
+***Jon Schipp*** (keisterstash) <br>
 jonschipp [ at ] Gmail dot com <br>
-sickbits.net, jonschipp.com <br>
+`sickbits.net`, `jonschipp.com` <br>
