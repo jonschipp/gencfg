@@ -94,9 +94,9 @@ Gratuitous ARP Reply:
 
 #### rfc2544
 Generates an individual packet configuration based on the Ethernet
-frame sized specified in RFC2544, "Benchmarking Methodology for
+frame sizes specified in RFC2544, "Benchmarking Methodology for
 Network Interconnect Devices". Each size is written to a cfg file
-in directory title rfc2544-$ts and to stdout. Sizes are outlined in
+in directory titled `rfc2544-$ts` and to stdout. Sizes are outlined in
 Section 9.1, "Frame sizes to be used on Ethernet" and consist of 64,
 128, 256, 512, 1024, 1280, 1518. Ethernet NICs add a 4 byte CRC to each
 frame which is accounted for in each configuration. E.g. for the 64 byte
@@ -110,8 +110,9 @@ and destination ports are set to UDP 9 (discard).
 
 ## CONVERSION:
 
-`-c` Convert C array of bytes exported from Wireshark. e.g. `-c carray.txt`
-`-p` Convert PCAP (requires netsniff-ng) to trafgen config e.g. `-p example.pcap`
+`-c` Convert C array of bytes exported from Wireshark. *e.g.* `-c carray.txt`
+
+`-p` Convert PCAP (requires netsniff-ng) to trafgen config *e.g.* `-p example.pcap`
 
 ## EXAMPLES:
 ```shell
@@ -123,5 +124,8 @@ and destination ports are set to UDP 9 (discard).
 ```
 
 AUTHOR: Jon Schipp (keisterstash)
+
 WEB: sickbits.net, jonschipp.com
+
 E-MAIL: jonschipp [ at ] Gmail dot com
+
