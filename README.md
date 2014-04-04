@@ -6,7 +6,7 @@
    * Apply byte separators to test syntax after changes to the lex parser
    * Convert input file to trafgen packet configuration
 
-#### TODO (not ranked) [~~DONE~~]:
+##### Todo (not ranked) [~~DONE~~]:
 
    * More packet configs
    * ~~Fix endwhite separator, now noendwhite~~
@@ -17,21 +17,24 @@
    * Add NST packet configs.
    * Add config addressed in ip frag patch to linux kernel
 
-## USAGE:
+## Usage:
 
 ```shell
 Usage: ./gencfg -G <packet type> -S <separator> [-o out.txt]
 ```
 
-Non-Mandatory Options:
+### Non-Mandatory Options:
 
 `-o` write output to file e.g. `-o packet.cfg`
+
 `-S` byte separator "comma/white/endwhite/noendcomma" e.g. `-S comman`
 
 Write configurations to a file or redirect to trafgen e.g.
-`./gencfg ... | trafgen --in - --out`
+```shell
+./gencfg ... | trafgen --in - --out`
+```
 
-## PACKET CONFIGURATION:
+## Packet Configuration:
 
 Generate built-in packet configurations `-G <packet type>`
 
@@ -45,11 +48,11 @@ Generate built-in packet configurations `-G <packet type>`
 
 #### beacon:
 Generation of 802.11 beacon frames. For proper byte alignment choose
-an SSID of 8 alpha-numeric characters ( -T "FreeWifi" ). Random
+an SSID of 8 alpha-numeric characters ( `-T "FreeWifi"` ). Random
 generation of 8 characters via /dev/urandom can be done automatically
-( -T random ) and the number of random SSID beacon generations can be
-chosen ( -n 1000 ). Other configurable option includes specifying the
-source MAC address ( -m 00:11:22:aa:bb:cc ).
+( `-T random` ) and the number of random SSID beacon generations can be
+chosen ( `-n 1000` ). Other configurable option includes specifying the
+source MAC address ( `-m 00:11:22:aa:bb:cc` ).
 
 ```shell
 ./gencfg -G beacon -T "FreeWifi" -m 00:11:22:aa:bb:cc
@@ -108,13 +111,13 @@ and destination ports are set to UDP 9 (discard).
 ./gencfg -G rfc2544 -s 10.1.1.1 -d 10.1.1.2 -m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
 ```
 
-## CONVERSION:
+## Conversion:
 
 `-c` Convert C array of bytes exported from Wireshark. *e.g.* `-c carray.txt`
 
 `-p` Convert PCAP (requires netsniff-ng) to trafgen config *e.g.* `-p example.pcap`
 
-## EXAMPLES:
+## Examples:
 ```shell
 ./gencfg -c array.txt -S comma | trafgen --in - --out eth0 --num 100
 ./gencfg -G syslog -s 10.1.1.1 -d 10.1.1.2 -M 00:0c:29:8d:4d:a2 -S white
@@ -123,9 +126,7 @@ and destination ports are set to UDP 9 (discard).
 ./gencfg -G rfc2544 -s 192.168.1.10 -d 192.168.1.255 -M ff:ff:ff:ff:ff:ff -P 123
 ```
 
-AUTHOR: Jon Schipp (keisterstash)
-
-WEB: sickbits.net, jonschipp.com
-
-E-MAIL: jonschipp [ at ] Gmail dot com
-
+## Author:
+Jon Schipp (keisterstash)
+jonschipp [ at ] Gmail dot com
+sickbits.net, jonschipp.com
