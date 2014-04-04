@@ -25,9 +25,9 @@ Usage: ./gencfg -G <packet type> -S <separator> [-o out.txt]
 
 ### Non-Mandatory Options:
 
-`-o` write output to file e.g. `-o packet.cfg`
+`-o` write output to file *e.g.* `-o packet.cfg`
 
-`-S` byte separator "comma/white/endwhite/noendcomma" e.g. `-S comma`
+`-S` byte separator "comma/white/endwhite/noendcomma" *e.g.* `-S comma`
 
 Write configurations to a file or redirect to trafgen:
 ```shell
@@ -128,6 +128,6 @@ and destination ports are set to UDP 9 (discard).
 ```
 
 ## Author:
-Jon Schipp (keisterstash)
-jonschipp [ at ] Gmail dot com
-sickbits.net, jonschipp.com
+Jon Schipp (keisterstash) <br>
+jonschipp [ at ] Gmail dot com <br>
+sickbits.net, jonschipp.com <br>
