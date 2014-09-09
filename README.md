@@ -45,6 +45,7 @@ Generate built-in packet configurations `-G <packet type>`
    * arp_request
    * arp_replay
    * rfc2544
+   * ntp
 
 #### beacon:
 Generation of 802.11 beacon frames. For proper byte alignment choose
@@ -109,6 +110,14 @@ The default source and destination ports are set to UDP 9 (discard). <br>
 
 ```shell
 ./gencfg -G rfc2544 -s 10.1.1.1 -d 10.1.1.2 -m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
+```
+
+#### ntp:
+Generate an NTP monlist request. Configurable options
+include source MAC, destination MAC, source IP, and destination IP.
+
+```shell
+./gencfg -G ntp -s 10.1.1.1 -d 10.1.1.2 -m de:ad:be:ef:00:00 -M 00:0c:29:8d:4d:a2
 ```
 
 ## Conversion:

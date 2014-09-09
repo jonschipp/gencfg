@@ -11,7 +11,7 @@ Trafgen configuration generator and syntax testing tool
 
       Generation:
 
-	-G <type> packet type "syslog/beacon/rfc2544/arp_request/arp_reply":
+	-G <type> packet type "syslog/beacon/rfc2544/arp_request/arp_reply/ntp":
 		\`\`rfc2544'' writes each frame size to dir
 	-s <ip>   Source IP
 	-d <ip>   Destination IP
@@ -88,6 +88,7 @@ fi
 
 . ./plugins/arp.sh
 . ./plugins/beacon.sh
+. ./plugins/ntp.sh
 . ./plugins/rfc2544.sh
 . ./plugins/syslog.sh
 
@@ -114,6 +115,8 @@ do
 	     elif [[ "$OPTARG" == beacon ]]; then
 	     TYPE="$OPTARG"
 	     elif [[ "$OPTARG" == rfc2544 ]]; then
+	     TYPE="$OPTARG"
+	     elif [[ "$OPTARG" == ntp ]]; then
 	     TYPE="$OPTARG"
 	     elif [[ "$OPTARG" == arp_request ]]; then
 	     TYPE="$OPTARG"
@@ -216,3 +219,9 @@ fi
 if [[ "$TYPE" == "arp_request" ]] || [[ "$TYPE" == "arp_reply" ]]; then
 arp ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} | output
 fi
+
+# NTP
+if [[ "$TYPE" == "ntp" ]]; then
+ntp ${DSTMAC:-""} ${SRCMAC:-""} ${SRCIP:-""} ${DSTIP:-""} ${SRCPORT:-""} ${DSTPORT:-""} | output
+fi
+
